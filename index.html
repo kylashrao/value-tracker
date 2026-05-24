@@ -11,12 +11,21 @@
         h1 { margin: 0; color: #34d399; font-size: 24px; }
         p { margin: 0; color: #9ca3af; font-size: 14px; }
         
-        /* High-Revenue Ad Display Blocks */
         .ad-banner-top { max-width: 1200px; margin: 20px auto 0 auto; background: #1f2937; border: 1px dashed #4b5563; text-align: center; padding: 15px; color: #9ca3af; font-size: 12px; font-weight: bold; border-radius: 8px; }
         .main-layout { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: flex; gap: 20px; flex-wrap: wrap; }
         .content-area { flex: 3; min-width: 300px; }
         .sidebar-area { flex: 1; min-width: 250px; }
         .ad-sidebar { background: #1f2937; border: 1px dashed #4b5563; text-align: center; padding: 100px 15px; color: #9ca3af; font-size: 12px; font-weight: bold; border-radius: 8px; position: sticky; top: 100px; }
+
+        /* Calculator Layout Styles */
+        .calc-card { background-color: #1f2937; border: 1px solid #10b981; border-radius: 12px; padding: 20px; margin-bottom: 25px; }
+        .calc-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+        .input-group { flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 12px; color: #9ca3af; text-transform: uppercase; font-weight: 600; }
+        input, select { background-color: #111827; border: 1px solid #374151; color: white; padding: 10px; border-radius: 6px; font-size: 14px; outline: none; }
+        input:focus, select:focus { border-color: #10b981; }
+        .calc-result { margin-top: 15px; padding-top: 15px; border-top: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; }
+        .calc-score { color: #34d399; font-weight: bold; font-size: 18px; font-family: monospace; }
 
         .btn-container { display: flex; gap: 10px; background-color: #1f2937; padding: 5px; width: fit-content; border-radius: 8px; margin-bottom: 20px; }
         button { background: none; border: none; color: #9ca3af; padding: 8px 16px; cursor: pointer; font-weight: 500; border-radius: 6px; font-size: 14px; }
@@ -39,13 +48,46 @@
         </div>
     </header>
 
-    <!-- TOP HEADER AD LAYOUT BLOCK -->
     <div class="ad-banner-top">
         ✨ SPONSORED ADVERTISEMENT SLOT (728x90 Leaderboard)
     </div>
 
     <div class="main-layout">
         <div class="content-area">
+            
+            <!-- INTERACTIVE MICRO-CALCULATOR CARD -->
+            <div class="calc-card">
+                <h3 style="margin:0;color:#10b981;">📱 Instant Custom Value Calculator</h3>
+                <p style="margin:5px 0 0 0;font-size:12px;color:#9ca3af;">Check any real-world purchase value breakdown instantly.</p>
+                <div class="calc-grid">
+                    <div class="input-group">
+                        <label>Item Description</label>
+                        <input type="text" id="calc-name" placeholder="e.g., Target Brand Milk">
+                    </div>
+                    <div class="input-group">
+                        <label>Total Price (\$)</label>
+                        <input type="number" id="calc-price" placeholder="0.00" step="0.01" oninput="runCustomCalculation()">
+                    </div>
+                    <div class="input-group">
+                        <label>Total Measurement Amount</label>
+                        <input type="number" id="calc-size" placeholder="e.g., 128" oninput="runCustomCalculation()">
+                    </div>
+                    <div class="input-group">
+                        <label>Calculation Unit</label>
+                        <select id="calc-unit" onchange="runCustomCalculation()">
+                            <option value="Ounces">Ounces</option>
+                            <option value="Hours">Hours</option>
+                            <option value="Grams">Grams</option>
+                            <option value="Servings">Servings</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="calc-result">
+                    <span id="calc-verdict" style="font-size:14px;color:#9ca3af;font-weight:500;">Fill values above to get an instant verdict...</span>
+                    <span id="calc-output" class="calc-score"></span>
+                </div>
+            </div>
+
             <div class="btn-container">
                 <button onclick="filterCategory('All')" id="btn-All" class="btn-active">All Items</button>
                 <button onclick="filterCategory('Streaming')" id="btn-Streaming">📺 Streaming</button>
@@ -67,7 +109,6 @@
             </div>
         </div>
 
-        <!-- RIGHT SIDEBAR AD REVENUE PANEL -->
         <div class="sidebar-area">
             <div class="ad-sidebar">
                 📊 HIGH-VIEWABILITY AD PANEL<br>(300x600 Vertical Block)
@@ -111,6 +152,32 @@
             });
         }
         
+        function runCustomCalculation() {
+            const price = parseFloat(document.getElementById('calc-price').value);
+            const size = parseFloat(document.getElementById('calc-size').value);
+            const unit = document.getElementById('calc-unit').value;
+            const verdictBox = document.getElementById('calc-verdict');
+            const outputBox = document.getElementById('calc-output');
+
+            if (!price || !size || size <= 0) {
+                verdictBox.innerText = "Fill values above to get an instant verdict...";
+                outputBox.innerText = "";
+                return;
+            }
+
+            const costPerUnit = price / size;
+            outputBox.innerText = "\$" + costPerUnit.toFixed(3) + " / " + unit;
+
+            if (costPerUnit < 0.015) {
+                verdictBox.innerHTML = "🏁 Verdict: <span style='color:#34d399;font-weight:bold;'>Top Tier Value!</span>";
+            } else if (costPerUnit < 0.10) {
+                verdictBox.innerHTML = "🏁 Verdict: <span style='color:#60a5fa;font-weight:bold;'>Reasonable Cost</span>";
+            } else {
+                // YOUR LINE SITS RIGHT HERE UNDER THE ELSE CHOICE
+                verdictBox.innerHTML = "🏁 Verdict: <span style='color:#f87171;font-weight:bold;'>Overpriced Premium</span>";
+            }
+        } // <-- This closes the runCustomCalculation function
+
         function filterCategory(category) {
             ['All', 'Streaming', 'Groceries'].forEach(cat => {
                 const btn = document.getElementById('btn-' + cat);
@@ -121,6 +188,3 @@
             else { renderTable(fullData.filter(item => item.category === category)); }
         }
         window.onload = loadTrackerData;
-    </script>
-</body>
-</html>
