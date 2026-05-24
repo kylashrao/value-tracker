@@ -120,7 +120,7 @@
         let fullData = [];
         async function loadTrackerData() {
             try {
-                const response = await fetch('data.json');
+                const response = await fetch('/value-tracker/data.json');
                 fullData = await response.json();
                 renderTable(fullData);
             } catch (error) {
