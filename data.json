@@ -21,6 +21,26 @@
   },
   {
     "id": 3,
+    "name": "Hulu (With Ads)",
+    "category": "Streaming",
+    "price": 7.99,
+    "metric_value": 850,
+    "metric_unit": "Hours of 7.0+ Content",
+    "calculated_cost": 0.009,
+    "verdict": "Highest Hours Value"
+  },
+  {
+    "id": 4,
+    "name": "Amazon Prime Video",
+    "category": "Streaming",
+    "price": 14.99,
+    "metric_value": 900,
+    "metric_unit": "Hours of 7.0+ Content",
+    "calculated_cost": 0.016,
+    "verdict": "Great Value Bundle"
+  },
+  {
+    "id": 5,
     "name": "Bulk Rolled Oats (Costco)",
     "category": "Groceries",
     "price": 9.99,
@@ -30,7 +50,7 @@
     "verdict": "Best Bulk Buy"
   },
   {
-    "id": 4,
+    "id": 6,
     "name": "Standard Oats (Local Grocery)",
     "category": "Groceries",
     "price": 3.49,
