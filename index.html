@@ -94,7 +94,6 @@
             dataToDisplay.forEach(item => {
                 const row = document.createElement('tr');
                 
-                // Fixed logic to parse any custom metric unit sentence cleanly
                 let unitLabel = "Unit";
                 if(item.metric_unit) {
                     const words = item.metric_unit.split(' ');
@@ -102,11 +101,11 @@
                 }
 
                 row.innerHTML = `
-                    <td style="font-weight:500;color:#ffffff;">\${item.name}</td>
-                    <td><span class="badge">\${item.category}</span></td>
-                    <td style="color:#d1d5db;">$\${item.price.toFixed(2)}</td>
-                    <td><span class="cost">$\${item.calculated_cost.toFixed(3)}</span> <span style="font-size:12px;color:#6b7280;">/\${unitLabel}</span></td>
-                    <td style="text-align: right;"><span class="verdict-tag">\${item.verdict}</span></td>
+                    <td style="font-weight:500;color:#ffffff;">${item.name}</td>
+                    <td><span class="badge">${item.category}</span></td>
+                    <td style="color:#d1d5db;">$${item.price.toFixed(2)}</td>
+                    <td><span class="cost">$${item.calculated_cost.toFixed(3)}</span> <span style="font-size:12px;color:#6b7280;">/${unitLabel}</span></td>
+                    <td style="text-align: right;"><span class="verdict-tag">${item.verdict}</span></td>
                 `;
                 tableBody.appendChild(row);
             });
