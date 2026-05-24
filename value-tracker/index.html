@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Value-Per-Dollar Tracker</title>
+    <style>
+        body { background-color: #111827; color: #f3f4f6; font-family: -apple-system, 
+BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }
+        header { border-b: 1px solid #1f2937; background-color: rgba(17, 24, 39, 0.8); 
+padding: 15px; position: sticky; top: 0; }
+        .header-container { max-width: 1000px; margin: 0 auto; display: flex; 
+justify-content: space-between; align-items: center; }
+        h1 { margin: 0; color: #34d399; font-size: 24px; }
+        p { margin: 0; color: #9ca3af; font-size: 14px; }
+        main { max-width: 1000px; margin: 30px auto; padding: 0 15px; }
+        .btn-container { display: flex; gap: 10px; background-color: #1f2937; padding: 5px; 
+rounded-radius: 8px; width: fit-content; border-radius: 8px; margin-bottom: 20px; }
+        button { background: none; border: none; color: #9ca3af; padding: 8px 16px; cursor: 
+pointer; font-weight: 500; border-radius: 6px; font-size: 14px; }
+        .btn-active { background-color: #10b981; color: #111827; }
+        .table-container { background-color: #1f2937; border: 1px solid #374151; 
+border-radius: 12px; overflow: hidden; }
+        table { w-full; width: 100%; border-collapse: collapse; text-align: left; }
+        th { background-color: rgba(31, 41, 55, 0.6); color: #9ca3af; padding: 15px; 
+font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid 
+#374151; }
+        td { padding: 15px; border-bottom: 1px solid #374151; font-size: 14px; }
+        tr:hover { background-color: rgba(55, 65, 81, 0.3); }
+        .badge { background-color: #374151; color: #d1d5db; padding: 4px 8px; border-radius: 
+20px; font-size: 12px; }
+        .cost { color: #34d399; font-family: monospace; font-size: 16px; font-weight: bold; }
+        .verdict-tag { background-color: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px 
+solid rgba(16, 185, 129, 0.2); padding: 4px 10px; border-radius: 4px; font-weight: bold; 
+font-size: 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>📊 Value-Per-Dollar Tracker</h1>
+            <p>Beating inflation by ranking every daily expense.</p>
+        </div>
+    </header>
+    <main>
+        <div class="btn-container">
+            <button onclick="filterCategory('All')" id="btn-All" class="btn-active">All 
+Items</button>
+            <button onclick="filterCategory('Streaming')" id="btn-Streaming">📺 
+Streaming</button>
+            <button onclick="filterCategory('Groceries')" id="btn-Groceries">🛒 
+Groceries</button>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Calculated Cost</th>
+                        <th style="text-align: right;">Verdict</th>
+                    </tr>
+                </thead>
+                <tbody id="tracker-table-body"></tbody>
+            </table>
+        </div>
+    </main>
+    <script>
+        let fullData = [];
+        async function loadTrackerData() {
+            try {
+                const response = await fetch('data.json');
+                fullData = await response.json();
+                renderTable(fullData);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('tracker-table-body').innerHTML = `<tr><td 
+colspan="5" style="text-align:center;color:#f87171;padding:20px;">Failed to load 
+data.json</td></tr>`;
+            }
+        }
+        function renderTable(dataToDisplay) {
+            const tableBody = document.getElementById('tracker-table-body');
+            tableBody.innerHTML = ''; 
+            dataToDisplay.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight:500;color:#ffffff;">${item.name}</td>
+                    <td><span class="badge">${item.category}</span></td>
+                    <td style="color:#d1d5db;">$${item.price.toFixed(2)}</td>
+                    <td><span class="cost">$${item.calculated_cost.toFixed(3)}</span> <span 
+style="font-size:12px;color:#6b7280;">/${item.metric_unit.split(' ').pop()}</span></td>
+                    <td style="text-align: right;"><span 
+class="verdict-tag">${item.verdict}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        function filterCategory(category) {
+            ['All', 'Streaming', 'Groceries'].forEach(cat => {
+                const btn = document.getElementById('btn-' + cat);
+                if (cat === category) { btn.className = "btn-active"; }
+                else { btn.className = ""; }
+            });
+            if (category === 'All') { renderTable(fullData); } 
+            else { renderTable(fullData.filter(item => item.category === category)); }
+        }
+        window.onload = loadTrackerData;
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Netflix Standard",
+    "category": "Streaming",
+    "price": 15.49,
+    "metric_value": 1250,
+    "metric_unit": "Hours of 7.0+ Content",
+    "calculated_cost": 0.012,
+    "verdict": "Excellent Value"
+  },
+  {
+    "id": 2,
+    "name": "Disney+ Premium",
+    "category": "Streaming",
+    "price": 13.99,
+    "metric_value": 600,
+    "metric_unit": "Hours of 7.0+ Content",
+    "calculated_cost": 0.023,
+    "verdict": "Good Value"
+  },
+  {
+    "id": 3,
+    "name": "Bulk Rolled Oats (Costco)",
+    "category": "Groceries",
+    "price": 9.99,
+    "metric_value": 112,
+    "metric_unit": "Total Ounces",
+    "calculated_cost": 0.089,
+    "verdict": "Best Bulk Buy"
+  },
+  {
+    "id": 4,
+    "name": "Standard Oats (Local Grocery)",
+    "category": "Groceries",
+    "price": 3.49,
+    "metric_value": 16,
+    "metric_unit": "Total Ounces",
+    "calculated_cost": 0.218,
+    "verdict": "Expensive Per Ounce"
+  }
+]
