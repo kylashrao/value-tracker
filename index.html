@@ -117,12 +117,15 @@
             </div>
         </div>
     </div>
-        <!-- COMPLIANCE FOOTER NAVIGATION -->
-    <footer style="max-width: 1200px; margin: 40px auto 20px auto; padding: 20px 15px; border-top: 1px solid #1f2937; text-align: center; font-size: 13px; color: #9ca3af;">
-        <span>© 2026 Value-Per-Dollar Tracker. All rights reserved.</span>
-        <span style="margin: 0 10px; color: #374151;">|</span>
-        <a href="privacy.html" style="color: #10b981; text-decoration: none; font-weight: 500;">Privacy Policy</a>
-    </footer>
+    <!-- COMPLIANCE NAVIGATION PANEL FOOTER -->
+<footer style="text-align: center; padding: 30px 20px; color: #94a3b8; border-top: 1px solid #334155; font-family: sans-serif; background: #0f172a;">
+    <p style="margin: 0 0 10px 0;">© 2026 Value-Per-Dollar Tracker. All rights reserved.</p>
+    <p style="margin: 0;">
+        <button onclick="document.getElementById('aboutModal').style.display='flex'" style="background:none; border:none; color:#10b981; cursor:pointer; font-size:14px; text-decoration:underline; font-weight:500; margin-right:15px;">About Us</button>
+        <span style="color:#334155;">|</span>
+        <button onclick="document.getElementById('contactModal').style.display='flex'" style="background:none; border:none; color:#10b981; cursor:pointer; font-size:14px; text-decoration:underline; font-weight:500; margin-left:15px;">Contact Us</button>
+    </p>
+</footer>
     <script>
         let fullData = [];
         async function loadTrackerData() {
