@@ -220,6 +220,19 @@
             document.getElementById('calc-verdict').innerHTML = `<strong>${name}</strong> is rated as <span class="verdict-tag" style="background-color:rgba(16, 185, 129, 0.1); color:#34d399; border:1px solid rgba(16, 185, 129, 0.2); padding:2px 6px; border-radius:4px; font-weight:bold;">${verdict}</span>`;
             document.getElementById('calc-output').innerText = `$${costPerUnit} / ${unit}`;
         }
+                // 🚀 Clear Form Action Function Pipeline
+        function clearCalculatorForm() {
+            // Reset all structural textual input form elements to empty baseline states
+            document.getElementById('calc-name').value = '';
+            document.getElementById('calc-price').value = '';
+            document.getElementById('calc-size').value = '';
+            document.getElementById('calc-unit').value = 'Ounces';
+
+            // Wipe layout display nodes back to initial prompt visibility text
+            document.getElementById('calc-verdict').innerText = "Fill values or press Live Scan to query retail stores...";
+            document.getElementById('calc-output').innerText = "";
+        }
+
 
         // 5. Live retail store lookup pipeline execution
         async function fetchLiveRetailData() {
