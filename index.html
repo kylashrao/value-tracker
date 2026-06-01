@@ -22,7 +22,8 @@
         .ad-sidebar { background: #1f2937; border: 1px dashed #4b5563; text-align: center; padding: 100px 15px; color: #9ca3af; font-size: 12px; font-weight: bold; border-radius: 8px; position: sticky; top: 100px; }
 
         .calc-card { background-color: #1f2937; border: 1px solid #10b981; border-radius: 12px; padding: 20px; margin-bottom: 25px; }
-        .calc-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+        .calc-grid { display: flex; gap: 20px; flex-wrap: nowrap; margin-top: 15px; align-items: flex-end; width: 100%; box-sizing: border-box; }
+@media (max-width: 768px) { .calc-grid { flex-wrap: wrap; } }
         .input-group { flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 5px; }
         .search-wrapper { display: flex; gap: 8px; width: 100%; align-items: center; }
         .search-btn { background-color: #10b981; color: #111827; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 38px; white-space: nowrap; font-size: 14px; }
