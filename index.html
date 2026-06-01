@@ -142,13 +142,22 @@
         let itemsData = [];
 
                         // 1. Load data safely matching your specific data.json keys
+                // 1. Load baseline data matrix and blend with browser storage safely
         async function loadTableData() {
             try {
-                // Pointing directly to the root asset location for Vercel deployment
-                const response = await fetch('/data.json');
+                let response = await fetch('/data.json');
                 if (!response.ok) throw new Error("Data array unreachable");
                 
                 itemsData = await response.json();
+                
+                // Pull user historical items list from native browser memory slots
+                const cachedScans = localStorage.getItem('user_custom_scans');
+                if (cachedScans) {
+                    const parsedScans = JSON.parse(cachedScans);
+                    // Merge user updates straight to the top of your array listing matrix rows
+                    itemsData = [...parsedScans, ...itemsData];
+                }
+                
                 renderTable(itemsData);
             } catch (error) {
                 console.error("Failed loading internal items schema:", error);
@@ -277,6 +286,13 @@
                 };
                 itemsData.unshift(newItem);
                 renderTable(itemsData);
+
+                // 💾 UPDATE LOCAL BROWSER STORAGE ARRAY SLOTS INSTANTLY
+                const cachedScans = localStorage.getItem('user_custom_scans');
+                let currentScansList = cachedScans ? JSON.parse(cachedScans) : [];
+                currentScansList.unshift(newItem);
+                localStorage.setItem('user_custom_scans', JSON.stringify(currentScansList));
+
 
             } catch (err) {
                 console.error(err);
