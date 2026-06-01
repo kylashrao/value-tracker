@@ -132,7 +132,7 @@
     <script>
         let itemsData = [];
 
-                // 1. Load data safely matching your specific data.json keys
+                        // 1. Load data safely matching your specific data.json keys
         async function loadTableData() {
             try {
                 // Pointing directly to the root asset location for Vercel deployment
@@ -147,6 +147,7 @@
                     `<tr><td colspan="5" style="text-align:center;color:#f87171;padding:20px;">Failed to load data components.</td></tr>`;
             }
         }
+
 
         // 2. Render rows cleanly without broken strings or duplicates
         function renderTable(dataToDisplay) {
