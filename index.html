@@ -128,38 +128,59 @@
         <a href="privacy.html" style="color:#10b981; font-size:14px; text-decoration:underline; font-weight:500; margin-left:10px; display:inline-block;">Privacy Policy</a>
     </p>
 </footer>
-        <script>
+        <!-- 💡 CLEANED UP SINGLE SCRIPT CONNECTOR ENGINE -->
+    <script>
         let itemsData = [];
 
+        // 1. Load data safely matching your specific data.json keys
         async function loadTableData() {
             try {
-                const response = await fetch('./data.json');
+                // Tries relative path first, then absolute repository path fallback
+                let response = await fetch('./data.json');
+                if (!response.ok) response = await fetch('/value-tracker/data.json');
+                
                 itemsData = await response.json();
                 renderTable(itemsData);
             } catch (error) {
                 console.error("Failed loading internal items schema:", error);
+                document.getElementById('tracker-table-body').innerHTML = 
+                    `<tr><td colspan="5" style="text-align:center;color:#f87171;padding:20px;">Failed to load data components.</td></tr>`;
             }
         }
 
-        function renderTable(data) {
+        // 2. Render rows cleanly without broken strings or duplicates
+        function renderTable(dataToDisplay) {
             const tableBody = document.getElementById('tracker-table-body');
             tableBody.innerHTML = '';
 
-            data.forEach(item => {
+            dataToDisplay.forEach(item => {
                 const row = document.createElement('tr');
+                
+                // Parse standard unit labels or use absolute string fallbacks
+                let unitLabel = item.unit || "Unit";
+                if (item.metric_unit) {
+                    const words = item.metric_unit.split(' ');
+                    unitLabel = words[words.length - 1];
+                }
+
+                // Handle property name inconsistencies safely (live API mapping vs data.json defaults)
+                const rawCost = item.calculated_cost !== undefined ? item.calculated_cost : parseFloat(item.calculatedCost?.replace('$', '') || 0);
+                const rawPrice = Number(item.price) || 0;
+
                 row.innerHTML = `
-                    <td style="font-weight: 600;">${item.name}</td>
-                    <td><span class="badge">${item.category}</span></td>
-                    <td>$${Number(item.price).toFixed(2)}</td>
-                    <td class="cost">${item.calculatedCost} <span style="font-size:11px; color:#6b7280;">/${item.unit}</span></td>
-                    <td style="text-align: right;"><span class="verdict-tag">${item.verdict}</span></td>
+                    <td style="padding:15px; font-weight:500; color:#ffffff; border-bottom:1px solid #374151;">${item.name}</td>
+                    <td style="padding:15px; border-bottom:1px solid #374151;"><span class="badge" style="background-color:#374151; color:#d1d5db; padding:4px 8px; border-radius:20px; font-size:12px;">${item.category}</span></td>
+                    <td style="padding:15px; color:#d1d5db; border-bottom:1px solid #374151;">$${rawPrice.toFixed(2)}</td>
+                    <td style="padding:15px; border-bottom:1px solid #374151;"><span class="cost" style="color:#34d399; font-family:monospace; font-size:16px; font-weight:bold;">$${rawCost.toFixed(3)}</span> <span style="font-size:12px; color:#6b7280;">/${unitLabel}</span></td>
+                    <td style="padding:15px; text-align:right; border-bottom:1px solid #374151;"><span class="verdict-tag" style="background-color:rgba(16, 185, 129, 0.1); color:#34d399; border:1px solid rgba(16, 185, 129, 0.2); padding:4px 10px; border-radius:4px; font-weight:bold; font-size:12px;">${item.verdict}</span></td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
+        // 3. Category filtering logic integration
         function filterCategory(category) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-active'));
+            document.querySelectorAll('button').forEach(btn => btn.classList.remove('btn-active'));
             const targetBtn = document.getElementById(`btn-${category}`);
             if (targetBtn) targetBtn.classList.add('btn-active');
 
@@ -171,6 +192,7 @@
             }
         }
 
+        // 4. Local instant calculator calculations
         function runCustomCalculation() {
             const name = document.getElementById('calc-name').value || "Custom Item";
             const price = parseFloat(document.getElementById('calc-price').value);
@@ -189,10 +211,11 @@
             else if (costPerUnit < 0.03) verdict = "Good Value";
             else if (costPerUnit > 0.10) verdict = "Expensive Per Unit";
 
-            document.getElementById('calc-verdict').innerHTML = `<strong>${name}</strong> is rated as <span class="verdict-tag">${verdict}</span>`;
+            document.getElementById('calc-verdict').innerHTML = `<strong>${name}</strong> is rated as <span class="verdict-tag" style="background-color:rgba(16, 185, 129, 0.1); color:#34d399; border:1px solid rgba(16, 185, 129, 0.2); padding:2px 6px; border-radius:4px; font-weight:bold;">${verdict}</span>`;
             document.getElementById('calc-output').innerText = `$${costPerUnit} / ${unit}`;
         }
 
+        // 5. Live retail store lookup pipeline execution
         async function fetchLiveRetailData() {
             const query = document.getElementById('calc-name').value;
             const verdictSpan = document.getElementById('calc-verdict');
@@ -212,6 +235,7 @@
 
                 const data = await res.json();
 
+                // Populate form entries dynamically
                 document.getElementById('calc-name').value = data.itemName;
                 document.getElementById('calc-price').value = data.totalPrice;
                 document.getElementById('calc-size').value = data.totalMeasurement;
@@ -219,11 +243,12 @@
 
                 runCustomCalculation();
 
+                // Standardize fields to slide object safely into local matrix tracker layout rows
                 const newItem = {
                     name: data.itemName,
                     category: "Groceries",
                     price: data.totalPrice,
-                    calculatedCost: data.calculatedCost,
+                    calculated_cost: parseFloat(data.calculatedCost.replace('$', '')),
                     unit: data.calculationUnit,
                     verdict: data.verdict
                 };
