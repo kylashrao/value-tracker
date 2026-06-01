@@ -62,9 +62,14 @@
                 <h3 style="margin:0;color:#10b981;">📱 Instant Custom Value Calculator</h3>
                 <p style="margin:5px 0 0 0;font-size:12px;color:#9ca3af;">Check any real-world purchase value breakdown instantly.</p>
                 <div class="calc-grid">
-                    <div class="input-group">
+                    <!-- Item Description with layout flex adjustments and dual actions buttons -->
+                    <div class="input-group" style="flex: 2;">
                         <label>Item Description</label>
-                        <input type="text" id="calc-name" placeholder="e.g., Target Brand Milk" onkeypress="if(event.key === 'Enter') { event.preventDefault(); fetchLiveRetailData(); }">
+                        <div class="search-wrapper">
+                            <input type="text" id="calc-name" placeholder="e.g., Target Brand Milk" onkeypress="if(event.key === 'Enter') { event.preventDefault(); fetchLiveRetailData(); }">
+                            <button class="search-btn" onclick="fetchLiveRetailData()">Live Scan 🔍</button>
+                            <button class="search-btn" onclick="clearCalculatorForm()" style="background-color: #374151; color: #d1d5db; border: 1px solid #4b5563;">Clear ✕</button>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Total Price (\$)</label>
