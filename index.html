@@ -128,6 +128,117 @@
         <a href="privacy.html" style="color:#10b981; font-size:14px; text-decoration:underline; font-weight:500; margin-left:10px; display:inline-block;">Privacy Policy</a>
     </p>
 </footer>
+        <script>
+        let itemsData = [];
+
+        async function loadTableData() {
+            try {
+                const response = await fetch('./data.json');
+                itemsData = await response.json();
+                renderTable(itemsData);
+            } catch (error) {
+                console.error("Failed loading internal items schema:", error);
+            }
+        }
+
+        function renderTable(data) {
+            const tableBody = document.getElementById('tracker-table-body');
+            tableBody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight: 600;">${item.name}</td>
+                    <td><span class="badge">${item.category}</span></td>
+                    <td>$${Number(item.price).toFixed(2)}</td>
+                    <td class="cost">${item.calculatedCost} <span style="font-size:11px; color:#6b7280;">/${item.unit}</span></td>
+                    <td style="text-align: right;"><span class="verdict-tag">${item.verdict}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function filterCategory(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('btn-active'));
+            const targetBtn = document.getElementById(`btn-${category}`);
+            if (targetBtn) targetBtn.classList.add('btn-active');
+
+            if (category === 'All') {
+                renderTable(itemsData);
+            } else {
+                const filtered = itemsData.filter(item => item.category.toLowerCase() === category.toLowerCase());
+                renderTable(filtered);
+            }
+        }
+
+        function runCustomCalculation() {
+            const name = document.getElementById('calc-name').value || "Custom Item";
+            const price = parseFloat(document.getElementById('calc-price').value);
+            const size = parseFloat(document.getElementById('calc-size').value);
+            const unit = document.getElementById('calc-unit').value;
+
+            if (!price || !size) {
+                document.getElementById('calc-verdict').innerText = "Fill values above to get an instant verdict...";
+                document.getElementById('calc-output').innerText = "";
+                return;
+            }
+
+            const costPerUnit = (price / size).toFixed(3);
+            let verdict = "Fair Value";
+            if (costPerUnit < 0.015) verdict = "Excellent Value";
+            else if (costPerUnit < 0.03) verdict = "Good Value";
+            else if (costPerUnit > 0.10) verdict = "Expensive Per Unit";
+
+            document.getElementById('calc-verdict').innerHTML = `<strong>${name}</strong> is rated as <span class="verdict-tag">${verdict}</span>`;
+            document.getElementById('calc-output').innerText = `$${costPerUnit} / ${unit}`;
+        }
+
+        async function fetchLiveRetailData() {
+            const query = document.getElementById('calc-name').value;
+            const verdictSpan = document.getElementById('calc-verdict');
+            const outputSpan = document.getElementById('calc-output');
+
+            if (!query) {
+                verdictSpan.innerText = "Please type an item description first (e.g., Target Milk)";
+                return;
+            }
+
+            verdictSpan.innerText = "Scanning live inventory systems...";
+            outputSpan.innerText = "⏳";
+
+            try {
+                const res = await fetch(`/api/tracker?query=${encodeURIComponent(query)}`);
+                if (!res.ok) throw new Error("API worker response failed");
+
+                const data = await res.json();
+
+                document.getElementById('calc-name').value = data.itemName;
+                document.getElementById('calc-price').value = data.totalPrice;
+                document.getElementById('calc-size').value = data.totalMeasurement;
+                document.getElementById('calc-unit').value = data.calculationUnit.charAt(0).toUpperCase() + data.calculationUnit.slice(1);
+
+                runCustomCalculation();
+
+                const newItem = {
+                    name: data.itemName,
+                    category: "Groceries",
+                    price: data.totalPrice,
+                    calculatedCost: data.calculatedCost,
+                    unit: data.calculationUnit,
+                    verdict: data.verdict
+                };
+                itemsData.unshift(newItem);
+                renderTable(itemsData);
+
+            } catch (err) {
+                console.error(err);
+                verdictSpan.innerText = "Product details missing from retail databases. Try adjusting keywords.";
+                outputSpan.innerText = "❌";
+            }
+        }
+
+        window.onload = loadTableData;
+    </script>
     <script>
         let fullData = [];
         async function loadTrackerData() {
