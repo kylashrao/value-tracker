@@ -132,12 +132,12 @@
     <script>
         let itemsData = [];
 
-        // 1. Load data safely matching your specific data.json keys
+                // 1. Load data safely matching your specific data.json keys
         async function loadTableData() {
             try {
-                // Tries relative path first, then absolute repository path fallback
-                let response = await fetch('./data.json');
-                if (!response.ok) response = await fetch('/value-tracker/data.json');
+                // Pointing directly to the root asset location for Vercel deployment
+                const response = await fetch('/data.json');
+                if (!response.ok) throw new Error("Data array unreachable");
                 
                 itemsData = await response.json();
                 renderTable(itemsData);
