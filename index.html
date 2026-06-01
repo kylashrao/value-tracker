@@ -64,7 +64,7 @@
                 <div class="calc-grid">
                     <div class="input-group">
                         <label>Item Description</label>
-                        <input type="text" id="calc-name" placeholder="e.g., Target Brand Milk">
+                        <input type="text" id="calc-name" placeholder="e.g., Target Brand Milk" onkeypress="if(event.key === 'Enter') { event.preventDefault(); fetchLiveRetailData(); }">
                     </div>
                     <div class="input-group">
                         <label>Total Price (\$)</label>
