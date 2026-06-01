@@ -265,77 +265,7 @@
 
         window.onload = loadTableData;
     </script>
-    <script>
-        let fullData = [];
-        async function loadTrackerData() {
-            try {
-                const response = await fetch('/value-tracker/data.json');
-                fullData = await response.json();
-                renderTable(fullData);
-            } catch (error) {
-                console.error(error);
-                document.getElementById('tracker-table-body').innerHTML = `<tr><td colspan="5" style="text-align:center;color:#f87171;padding:20px;">Failed to load database.</td></tr>`;
-            }
-        }
-        
-        function renderTable(dataToDisplay) {
-            const tableBody = document.getElementById('tracker-table-body');
-            tableBody.innerHTML = ''; 
-            dataToDisplay.forEach(item => {
-                const row = document.createElement('tr');
-                
-                let unitLabel = "Unit";
-                if(item.metric_unit) {
-                    const words = item.metric_unit.split(' ');
-                    unitLabel = words[words.length - 1];
-                }
-
-                row.innerHTML = '<tr>' +
-                    '<td style="padding:15px;font-weight:500;color:#ffffff;border-bottom:1px solid #374151;">' + item.name + '</td>' +
-                    '<td style="padding:15px;border-bottom:1px solid #374151;"><span class="badge" style="background-color:#374151;color:#d1d5db;padding:4px 8px;border-radius:20px;font-size:12px;">' + item.category + '</span></td>' +
-                    '<td style="padding:15px;color:#d1d5db;border-bottom:1px solid #374151; ">\$' + item.price.toFixed(2) + '</td>' +
-                    '<td style="padding:15px;border-bottom:1px solid #374151;"><span class="cost" style="color:#34d399;font-family:monospace;font-size:16px;font-weight:bold;">\$' + item.calculated_cost.toFixed(3) + '</span> <span style="font-size:12px;color:#6b7280;">/' + unitLabel + '</span></td>' +
-                    '<td style="padding:15px;text-align:right;border-bottom:1px solid #374151;"><span class="verdict-tag" style="background-color:rgba(16, 185, 129, 0.1);color:#34d399;border:1px solid rgba(16, 185, 129, 0.2);padding:4px 10px;border-radius:4px;font-weight:bold;font-size:12px;">' + item.verdict + '</span></td>' +
-                '</tr>';
-                tableBody.appendChild(row);
-            });
-        }
-        function runCustomCalculation() {
-            const price = parseFloat(document.getElementById('calc-price').value);
-            const size = parseFloat(document.getElementById('calc-size').value);
-            const unit = document.getElementById('calc-unit').value;
-            const verdictBox = document.getElementById('calc-verdict');
-            const outputBox = document.getElementById('calc-output');
-
-            if (!price || !size || size <= 0) {
-                verdictBox.innerText = "Fill values above to get an instant verdict...";
-                outputBox.innerText = "";
-                return;
-            }
-
-            const costPerUnit = price / size;
-            outputBox.innerText = "\$" + costPerUnit.toFixed(3) + " / " + unit;
-
-            if (costPerUnit < 0.015) {
-                verdictBox.innerHTML = "🏁 Verdict: <span style='color:#34d399;font-weight:bold;'>Top Tier Value!</span>";
-            } else if (costPerUnit < 0.10) {
-                verdictBox.innerHTML = "🏁 Verdict: <span style='color:#60a5fa;font-weight:bold;'>Reasonable Cost</span>";
-            } else {
-                verdictBox.innerHTML = "🏁 Verdict: <span style='color:#f87171;font-weight:bold;'>Overpriced Premium</span>";
-            }
-        }
-
-        function filterCategory(category) {
-            ['All', 'Streaming', 'Groceries'].forEach(cat => {
-                const btn = document.getElementById('btn-' + cat);
-                if (cat === category) { btn.className = "btn-active"; }
-                else { btn.className = ""; }
-            });
-            if (category === 'All') { renderTable(fullData); } 
-            else { renderTable(fullData.filter(item => item.category === category)); }
-        }
-        window.onload = loadTrackerData;
-    </script>
+    
     <!-- ADSENSE COMPLIANCE MODAL LAYER FRAMEWORKS -->
 <div id="aboutModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
     <div style="background:#1e293b; color:#f8fafc; max-width:600px; width:100%; padding:30px; border-radius:12px; position:relative; max-height:85vh; overflow-y:auto; font-family:sans-serif; line-height:1.6; border:1px solid #334155;">
