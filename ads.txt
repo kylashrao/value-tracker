@@ -1,0 +1,2 @@
+# ads.txt File Scaffolding
+google.com, pub-2824959172169836, DIRECT, f08c47fec0942fa0
