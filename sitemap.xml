@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://sitemaps.org">
+  <!-- Your Primary Landing Tool Page Link -->
+  <url>
+    <loc>https://vercel.app</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- Your Compliance Privacy Regulations Page Link -->
+  <url>
+    <loc>https://vercel.appprivacy.html</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>
