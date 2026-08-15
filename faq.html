@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions | Value-Per-Dollar Tracker</title>
+    <style>
+        :root {
+            --bg-dark: #0b132b;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --accent-green: #10b981;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            color: var(--accent-green);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-muted);
+        }
+
+        .faq-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            padding: 1.25rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            color: var(--accent-green);
+        }
+
+        .faq-answer {
+            padding: 0 1.25rem 1.25rem 1.25rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .icon {
+            transform: rotate(180deg);
+        }
+
+        .icon {
+            transition: transform 0.2s ease;
+            color: var(--accent-green);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: var(--accent-green);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+
+        footer a:hover {
+            color: var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Tracker</a>
+        
+        <div class="header">
+            <h1>Frequently Asked Questions</h1>
+            <p>Learn how to calculate true cost-per-unit, beat shrinkflation, and optimize purchase decisions.</p>
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What is the Value-Per-Dollar Tracker?</span>
+                    <span class="icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    The Value-Per-Dollar Tracker calculates the true unit cost of items across various categories (groceries, streaming services, SaaS, etc.) to strip away promotional packaging inflation and show real value.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How is unit cost calculated for subscriptions vs. physical goods?</span>
+                    <span class="icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    For physical items like groceries, unit cost equals total price divided by net volume/weight in fluid ounces or dry mass. For streaming services, unit cost is evaluated on flat monthly rate relative to average content hours streamed.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What is hidden shrinkflation and how do I track it?</span>
+                    <span class="icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    Shrinkflation occurs when manufacturers reduce product sizes by 5%–10% while keeping the shelf sticker price identical. Routine unit-cost checks reveal these stealth price increases instantly.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>How do I interpret the "Verdict" badges?</span>
+                    <span class="icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    Items are categorized automatically based on standard threshold benchmarks: 
+                    <strong>Excellent Value</strong> ($0.015/oz or lower), 
+                    <strong>Good Value</strong> ($0.030/oz or lower), or 
+                    <strong>Expensive</strong> when exceeding threshold limits.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 Value-Per-Dollar Tracker. All rights reserved.</p>
+            <p>
+                <a href="about.html">About Us</a> | 
+                <a href="contact.html">Contact Us</a> | 
+                <a href="privacy.html">Privacy Policy</a> | 
+                <a href="faq.html">FAQ</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>
